@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pH+ - Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .subtitulo {
+            color: #7f8c8d;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: normal;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .btn-login {
+            background-color: #3498db !important;
+        }
+        .btn-cadastrar {
+            background-color: #4CAF50 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>pH+</h1>
+        <p class="subtitulo">Bem-vindo</p>
+        
+        <form method="post" action="{% url 'login' %}">  <!-- Action para login -->
+            {% csrf_token %}
+            
+            <input type="text" name="username" placeholder="Seu nome" required>
+            <input type="password" name="senha" placeholder="Sua senha" required>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <!-- Botão LOGIN (ação principal) -->
+                <button type="submit" class="btn-login" style="flex: 1; padding: 12px; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                    Login
+                </button>
+                
+                <!-- Link CADASTRAR (como botão estilizado) -->
+                <a href="{% url 'cadastro' %}" class="btn-cadastrar" style="flex: 1; padding: 12px; color: white; text-align: center; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                    Cadastrar
+                </a>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="{% url 'recuperar_senha' %}" style="color: #666; text-decoration: none;">
+                        Esqueceu a senha?
+                </a>
+            </div>
+           
+        </form>
+    </div>
+</body>
+</html>

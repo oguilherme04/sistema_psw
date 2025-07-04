@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | pH+</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --dark-color: #181517;
+            --light-color: #f5f5f5;
+            --header-color: #4FC3F7;
+            --sidebar-width: 250px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-areas:
+                "header header"
+                "sidebar main"
+                "footer footer";
+            min-height: 100vh;
+            background-color: var(--light-color);
+        }
+        
+        /* HEADER */
+        header {
+            grid-area: header;
+            background-color: var(--header-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--header-color);
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .menu-dots {
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 200px;
+            display: none;
+            z-index: 100;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: var(--light-color);
+        }
+        
+        /* SIDEBAR */
+        aside {
+            grid-area: sidebar;
+            background-color: rgb(250, 240, 240);
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-menu a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            background-color: var(--light-color);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        /* MAIN CONTENT */
+        main {
+            grid-area: main;
+            padding: 2rem;
+            background-color: var(--light-color);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+        }
+        
+        /* Carrossel de Texto */
+        .text-carousel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: rgb(255, 255, 255);
+            border-radius: 50px;
+            padding: 2rem;
+            box-shadow: 0 15px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-content {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CENTRALIZAÇÃO E ESTILO DOS TÍTULOS */
+        .carousel-slide h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 0.2rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        .carousel-dot.active {
+            background-color: var(--primary-color);
+        }
+
+        /* Estilos para os gráficos */
+        .chart-container {
+            height: 180px;
+            width: 80%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .measurement-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .status-ok {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-warning {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        .status-danger {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            grid-area: footer;
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">pH+</div>
+        <div class="user-menu">
+            <div class="user-avatar">US</div>
+            <div class="menu-dots" id="menuDots">⋮</div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#">Sobre o sistema</a>
+                <a href="#">Alterar Senha</a>
+                <a href="#">Sair</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- SIDEBAR -->
+    <aside>
+        <ul class="nav-menu">
+            <li><a href="{% url 'index' %}" class="active">Pagina Principal</a></li>
+            <li><a href="{% url 'cadastro_piscina' %}">Cadastro da piscina</a></li>
+            <li><a href="{% url 'monitoramento' %}">Monitoramento</a></li>  
+            <li><a href="{% url 'pecas' %}">Peças</a></li>
+            <li><a href="{% url 'cadastro_equipamento' %}">Cadastro de equipamento</a></li>
+            <li><a href="{% url 'recomendacoes' %}">Recomendação de cuidados</a></li>
+        </ul>
+    </aside>
+    
+    <!-- MAIN CONTENT -->
+    <main>
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Bem-vindo ao pH+</h1>
+        </div>
+        
+        <div class="text-carousel">
+            <div class="carousel-content">
+                <!-- Slide 1: Gráfico de pH -->
+                <div class="carousel-slide active">
+                    <h2>Monitoramento de pH</h2>
+                    <div class="chart-container">
+                        <canvas id="phChart"></canvas>
+                    </div>
+                    <div class="measurement-info">
+                        <p><strong>Última medição:</strong> 7.4</p>
+                        <p><strong>Faixa ideal:</strong> 7.2 - 7.6</p>
+                        <p><strong>Status:</strong> <span class="status-ok">Dentro do ideal</span></p>
+                    </div>
+                </div>
+                
+                <!-- Slide 2: Gráfico de Temperatura -->
+                <div class="carousel-slide">
+                    <h2>Monitoramento de Temperatura</h2>
+                    <div class="chart-container">
+                        <canvas id="temperatureChart"></canvas>
+                    </div>
+                    <div class="measurement-info">
+                        <p><strong>Última medição:</strong> 26.5°C</p>
+                        <p><strong>Faixa confortável:</strong> 24°C - 28°C</p>
+                        <p><strong>Status:</strong> <span class="status-ok">Confortável</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-nav">
+                <div class="carousel-dot active" data-slide="0"></div>
+                <div class="carousel-dot" data-slide="1"></div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- FOOTER -->
+    <footer>
+        <p>pH+ Monitoramento de Piscinas &copy; 2025 - Todos os direitos reservados</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Menu dropdown dos três pontos
+        document.getElementById('menuDots').addEventListener('click', function() {
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        });
+        
+        // Fechar o menu quando clicar fora
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.menu-dots') && !event.target.matches('.user-avatar')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        });
+
+        // Carrossel de Texto Automático
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        let currentSlide = 0;
+        const slideInterval = 8000; // 8 segundos por slide
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        // Configura os dots para navegação
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+                resetTimer();
+            });
+        });
+
+        let slideTimer = setInterval(nextSlide, slideInterval);
+
+        function resetTimer() {
+            clearInterval(slideTimer);
+            slideTimer = setInterval(nextSlide, slideInterval);
+        }
+
+        // Inicia o carrossel
+        showSlide(0);
+
+        // Inicializar os gráficos quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico de pH
+            const phCtx = document.getElementById('phChart').getContext('2d');
+            const phChart = new Chart(phCtx, {
+                type: 'line',
+                data: {
+                    labels: ['06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                    datasets: [{
+                        label: 'pH',
+                        data: [7.3, 7.4, 7.5, 7.4, 7.4, 7.3],
+                        borderColor: '#4e73df',
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                        tension: 0.3,
+                        fill: true,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 7.0,
+                            max: 7.8,
+                            ticks: {
+                                stepSize: 0.2
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 3,
+                            hoverRadius: 5
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de Temperatura
+            const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+            const tempChart = new Chart(tempCtx, {
+                type: 'line',
+                data: {
+                    labels: ['06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                    datasets: [{
+                        label: 'Temperatura (°C)',
+                        data: [25.0, 25.5, 26.0, 26.5, 26.3, 26.0],
+                        borderColor: '#e74a3b',
+                        backgroundColor: 'rgba(231, 74, 59, 0.05)',
+                        tension: 0.3,
+                        fill: true,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 24,
+                            max: 28,
+                            ticks: {
+                                stepSize: 0.5
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 3,
+                            hoverRadius: 5
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

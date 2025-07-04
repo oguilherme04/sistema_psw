@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha | pH+</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        input:hover {
+            border-color: #4CAF50 !important;
+        }
+        button:hover {
+            background-color: #45a049 !important;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4CAF50 !important;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+        <div style="width: 100%; max-width: 400px; padding: 20px;">
+            <!-- Container do Formulário -->
+            <div style="background: white; border-radius: 30px; padding: 50px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border: 2px solid #000;">
+                <h2 style="text-align: center; margin-bottom: 25px; color: #333;">Redefinir Senha</h2>
+                
+                <!-- Mensagens de Sucesso/Erro -->
+                {% if messages %}
+                <div style="margin-bottom: 20px; text-align: center;">
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <div style="color: #4CAF50; padding: 10px; border-radius: 4px; background-color: #e8f5e9;">
+                                {{ message }}
+                            </div>
+                        {% else %}
+                            <div style="color: #f44336; padding: 10px; border-radius: 4px; background-color: #ffebee;">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            
+                <form method="post" action="{% url 'recuperar_senha' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Campo E-mail -->
+                    <div style="margin-bottom: 25px;">
+                        <input type="email" name="email" placeholder="Seu e-mail cadastrado" required 
+                               style="width: 100%; padding: 12px; border: 2px solid #000; border-radius: 10px;">
+                    </div>
+                    
+                    <!-- Botão -->
+                    <div style="text-align: center;">
+                        <button type="submit" 
+                                style="padding: 12px 30px; background-color: #4CAF50; color: white; 
+                                       border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                            Gerar Nova Senha
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
