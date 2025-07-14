@@ -1,138 +1,86 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth.views import PasswordResetView, LogoutView
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 from .forms import CadastroForm, RecuperarSenhaForm
-from .models import Usuario
+from .models import Usuario, Piscina, Monitoramento
 import random
 import string
-from django.contrib.auth import get_user_model  # Adicione esta importação
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.shortcuts import render
-from .models import Piscina
+from .models import Monitoramento
+from .models import Monitoramento, Piscina
+from .forms import MonitoramentoForm
 
-
-User = get_user_model()  
-
-# Classe personalizada para redefinição de senha, se quiser customizar mais depois
 class CustomPasswordResetView(PasswordResetView):
-    pass
+    template_name = 'sistema_piscina/recuperar_senha.html'
+    success_url = reverse_lazy('login')
 
-# Página inicial
+
 def index(request):
     return render(request, 'sistema_piscina/index.html')
 
-# Página de medições
-def medicoes(request):
-    return render(request, 'sistema_piscina/medicoes.html')
+def recuperar_senha(request):
+    # Sua lógica de recuperação de senha aqui
+    return render(request, 'recuperar_senha.html')
 
-# Página do questionário
-def questionario(request):
-    return render(request, 'sistema_piscina/questionario.html')
+def cadastro_piscina(request):
+    return render(request, 'sistema_piscina/cadastro_piscina.html')
 
-# Página de cadastro
+def monitoramento(request):
+    return render(request, 'sistema_piscina/monitoramento.html')
+
+def pecas(request):
+    return render(request, 'sistema_piscina/pecas.html')
+
+def cadastro_equipamento(request):
+    return render(request, 'sistema_piscina/cadastro_equipamento.html')
+
+def recomendacoes(request):
+    return render(request, 'sistema_piscina/recomendacoes.html')
+
+@login_required
+def dashboard(request):
+    return render(request, 'sistema_piscina/dashboard.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, email=email, password=password)
+        if user:
+            login(request, user)
+            return redirect('dashboard')
+        messages.error(request, 'Credenciais inválidas')
+    return render(request, 'sistema_piscina/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
+
 def cadastro(request):
     if request.method == 'POST':
         form = CadastroForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, 'Cadastro realizado com sucesso!')
-            return redirect('index')  # ou 'dashboard' se houver
+            return redirect('dashboard')
     else:
         form = CadastroForm()
     return render(request, 'sistema_piscina/cadastro.html', {'form': form})
 
-# Página de login
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('dashboard')  # Alterado para redirecionar para o dashboard
-        else:
-            # Mensagem de erro se as credenciais estiverem incorretas
-            return render(request, 'sistema_piscina/login.html', {
-                'error': 'Usuário ou senha incorretos'
-            })
-
-    return render(request, 'sistema_piscina/login.html')
-
-# Página de recuperação de senha
-def recuperar_senha(request):
-    if request.method == 'POST':
-        email = request.POST.get('email', '').strip()  # Adicionado tratamento básico
-        
-        if not email:  # Verifica se o email está vazio
-            messages.error(request, "Por favor, insira um e-mail válido.")
-            return redirect('recuperar_senha')
-        
-        try:
-            user = User.objects.get(email=email) 
-            nova_senha = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-            user.set_password(nova_senha)
-            user.save()
-            
-            # EM PRODUÇÃO: Adicione aqui o envio por e-mail
-            messages.success(request, f"Senha temporária gerada: {nova_senha}")
-            return redirect('recuperar_senha')
-            
-        except User.DoesNotExist:
-            messages.error(request, "E-mail não encontrado!")
-        except Exception as e:
-            messages.error(request, f"Erro inesperado: {str(e)}")
-
-    return render(request, 'sistema_piscina/recuperar_senha.html')
-
-
 @login_required
-def pagina_view(request):
-    return render(request, 'sistema_piscina/dashboard.html')
-
-def cadastrar_usuario(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        senha = request.POST.get('senha')
-        
-        if not email or not senha:
-            messages.error(request, "E-mail e senha são obrigatórios!")
-            return redirect('cadastrar_usuario')
-        
-        try:
-            User.objects.create_user(
-                username=email,
-                email=email,
-                password=senha
-            )
-            messages.success(request, "Cadastro realizado com sucesso!")
-            return redirect('login')
-        except Exception as e:
-            messages.error(request, f"Erro ao cadastrar: {str(e)}")
-            
-    return render(request, 'sistema_piscina/cadastro.html')
-
-def monitoramento(request):
+def monitoramento_view(request):
+    monitoramentos = Monitoramento.objects.all().order_by('-data_medicao')
     piscinas = Piscina.objects.all()
-    return render(request, 'sistema_piscina/monitoramento.html', {'piscinas': piscinas})
-@login_required
-def cadastro_piscina_view(request):
-    return render(request, 'sistema_piscina/cadastro_piscina.html')
+    return render(request, 'sistema_piscina/monitoramento.html', {
+        'monitoramentos': monitoramentos,
+        'piscinas': piscinas
+    })
 
-@login_required
-def pecas_view(request):
-    return render(request, 'sistema_piscina/pecas.html')
 
-@login_required
-def cadastro_equipamento_view(request):
-    return render(request, 'sistema_piscina/cadastro-equipamento.html')
-
-@login_required
-def recomendacoes_view(request):
-    return render(request, 'sistema_piscina/recomendacoes.html')
 
 
 
