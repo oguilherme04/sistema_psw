@@ -1,278 +1,506 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monitoramento | pH+</title>
-  <style>
-    :root {
-      --primary-color: #4CAF50;
-      --dark-color: #181517;
-      --light-color: #f5f5f5;
-      --header-color: #4FC3F7;
-      --sidebar-width: 250px;
-      --link-color: #080f08;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      grid-template-columns: var(--sidebar-width) 1fr;
-      grid-template-areas:
-        "header header"
-        "sidebar main"
-        "footer footer";
-      min-height: 100vh;
-      background-color: var(--light-color);
-    }
-
-    header {
-      grid-area: header;
-      background-color: var(--header-color);
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .user-menu {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .menu-dots {
-      cursor: pointer;
-      font-size: 2rem;
-      padding: 0 15px;
-      line-height: 1;
-      margin-top: -5px;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background-color: white;
-      border-radius: 5px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      width: 200px;
-      display: none;
-      z-index: 100;
-    }
-
-    .dropdown-menu.show {
-      display: block;
-    }
-
-    .dropdown-menu a {
-      display: block;
-      padding: 0.75rem 1rem;
-      color: var(--dark-color);
-      text-decoration: none;
-      transition: background-color 0.3s;
-      font-size: 0.9rem;
-      font-weight: normal;
-    }
-
-    .dropdown-menu a:hover {
-      background-color: var(--light-color);
-    }
-
-    aside {
-      grid-area: sidebar;
-      background-color: rgb(250, 240, 240);
-      padding: 1.5rem 0;
-    }
-
-    .nav-menu {
-      list-style: none;
-    }
-
-    .nav-menu li {
-      margin-bottom: 0.5rem;
-    }
-
-    .nav-menu a {
-      display: block;
-      padding: 0.75rem 1.5rem;
-      color: var(--link-color);
-      text-decoration: none;
-      transition: all 0.3s;
-      font-weight: normal;
-    }
-
-    .nav-menu a:hover,
-    .nav-menu a.active {
-      background-color: rgba(218, 43, 43, 0.1);
-      border-left: 4px solid var(--primary-color);
-    }
-
-    main {
-      grid-area: main;
-      padding: 2rem;
-      background-color: var(--light-color);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    .monitoring-box {
-      background-color: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
-      width: 500px;
-    }
-
-    .monitoring-box h2 {
-      margin-bottom: 1.5rem;
-      color: var(--dark-color);
-      text-align: center;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1rem;
-    }
-
-    .form-group label {
-      margin-bottom: 0.3rem;
-      font-weight: bold;
-    }
-
-    select, input {
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .form-row {
-      display: flex;
-      gap: 1rem;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      padding: 0.8rem;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1rem;
-    }
-
-    button:hover {
-      background-color: #388e3c;
-    }
-
-    footer {
-      grid-area: footer;
-      background-color: var(--dark-color);
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Monitoramento de Piscina</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: #006994;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .main-container {
+            max-width: 1100px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            flex: 1;
+        }
+        
+        h2 {
+            color: #006994;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #006994;
+            padding-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #006994;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .acoes {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .acoes a {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .acoes a:hover {
+            transform: scale(1.1);
+        }
+        
+        .excluir { color: #e74c3c !important; }
+        .detalhar { color: #3498db !important; }
+        .editar { color: #2ecc71 !important; }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .btn-nova-medicao {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-nova-medicao:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .btn-recomendacao {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .btn-recomendacao:hover {
+            background-color: #138496;
+            transform: translateY(-2px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 85%;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: modalopen 0.4s;
+        }
+        
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .recomendacao-section {
+            margin-bottom: 25px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #006994;
+        }
+        
+        .recomendacao-section h3 {
+            color: #006994;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .recomendacao-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .recomendacao-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .recomendacao-item h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+        
+        .recomendacao-item p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .valores-ideais {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .valores-ideais h4 {
+            color: #006994;
+            margin-bottom: 10px;
+        }
+        
+        .valores-ideais ul {
+            list-style-type: none;
+        }
+        
+        .valores-ideais li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .valores-ideais li i {
+            margin-right: 10px;
+            color: #006994;
+        }
+        
+        footer {
+            background-color: #006994;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px;
+                margin: 15px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 20px auto;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <div class="logo">pH+</div>
-    <div class="user-menu">
-      <div class="menu-dots" id="menuDots">⋯</div>
-      <div class="dropdown-menu" id="dropdownMenu">
-        <a href="#">Sobre o sistema</a>
-        <a href="#">Alterar Senha</a>
-        <a href="#">Sair</a>
-      </div>
-    </div>
-  </header>
-
-  <!-- SIDEBAR -->
-  <aside>
-    <ul class="nav-menu">
-      <li><a href="{% url 'index' %}">Página Principal</a></li>
-      <li><a href="{% url 'cadastro_piscina' %}">Cadastro da piscina</a></li>
-      <li><a href="{% url 'monitoramento' %}" class="active">Monitoramento</a></li>  
-      <li><a href="{% url 'pecas' %}">Peças</a></li>
-      <li><a href="{% url 'cadastro_equipamento' %}">Cadastro de equipamento</a></li>
-      <li><a href="{% url 'recomendacoes' %}">Recomendação de cuidados</a></li>
-    </ul>
-  </aside>
-  
-
-  <!-- MAIN CONTENT -->
-  <main>
-    <div class="monitoring-box">
-      <h2>Monitoramento</h2>
-
-      <div class="form-group">
-        <label for="piscina">Piscina:</label>
-        <select id="piscina">
-          <option value="">Selecione a piscina</option>
-          <option value="p1">Piscina 1</option>
-          <option value="p2">Piscina 2</option>
-        </select>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group" style="flex: 1;">
-          <label for="ph">pH:</label>
-          <input type="text" id="ph" placeholder="Valor do pH">
+    <header>
+        <h1><i class="fas fa-swimming-pool"></i> Sistema de Monitoramento de Piscina</h1>
+    </header>
+    
+    <div class="main-container">
+        <h2><i class="fas fa-clipboard-list"></i> MONITORAMENTOS</h2>
+        
+        <table id="tabela-medicoes">
+            <thead>
+                <tr>
+                    <th>NOME</th>
+                    <th>NÍVEL PH</th>
+                    <th>TEMPERATURA</th>
+                    <th>DATA</th>
+                    <th>AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão adicionadas dinamicamente -->
+            </tbody>
+        </table>
+        
+        <tbody>
+            {% for monitoramento in monitoramentos %}
+            <tr>
+                <td>{{ monitoramento.piscina.nome }}</td>
+                <td>{{ monitoramento.ph }}</td>
+                <td>{{ monitoramento.temperatura }}</td>
+                <td>{{ monitoramento.data }}</td>
+                <td>
+                    <div class="acoes">
+                        <a href="{% url 'sistema_piscina:excluir_monitoramento' monitoramento.id %}" class="excluir" title="Excluir"><i class="fas fa-trash"></i></a>
+                        <a href="{% url 'sistema_piscina:detalhar_monitoramento' monitoramento.id %}" class="detalhar" title="Detalhes"><i class="fas fa-eye"></i></a>
+                        <a href="{% url 'sistema_piscina:editar_monitoramento' monitoramento.id %}" class="editar" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+        </tbody>
+    </table>
+     
+         <div class="btn-container">
+             <a href="{% url 'sistema_piscina:nova_medicao' %}" class="btn btn-nova-medicao">
+            <i class="fas fa-plus"></i> Nova Medição
+             </a>
+    
+            
+            <button class="btn btn-recomendacao" id="btnRecomendacao">
+                <i class="fas fa-lightbulb"></i> Recomendações
+            </button>
         </div>
-
-        <div class="form-group" style="flex: 1;">
-          <label for="temperatura">Temperatura:</label>
-          <input type="text" id="temperatura" placeholder="Temperatura da água">
-        </div>
-      </div>
-
-      <button>Salvar Monitoramento</button>
     </div>
-  </main>
+    
+    <!-- Modal de Recomendações -->
+    <div id="modalRecomendacao" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-book"></i> Guia Completo de Manutenção</h2>
+            
+            <div class="valores-ideais">
+                <h4><i class="fas fa-check-circle"></i> Valores Ideais para Piscina</h4>
+                <ul>
+                    <li><i class="fas fa-tint"></i> <strong>pH:</strong> 7.2 a 7.6</li>
+                    <li><i class="fas fa-thermometer-half"></i> <strong>Temperatura:</strong> 25°C a 28°C</li>
+                    <li><i class="fas fa-flask"></i> <strong>Cloro:</strong> 1.0 a 3.0 ppm</li>
+                    <li><i class="fas fa-vial"></i> <strong>Alcalinidade:</strong> 80 a 120 ppm</li>
+                </ul>
+            </div>
+            
+            <div class="recomendacao-section">
+                <h3><i class="fas fa-vial"></i> Controle de pH</h3>
+                
+                <div class="recomendacao-item">
+                    <h4>pH Baixo (≤ 7.0)</h4>
+                    <p><strong>Causas:</strong> Excesso de chuva, uso de produtos ácidos, alta frequência de uso.</p>
+                    <p><strong>Solução:</strong> Adicionar elevador de pH (carbonato de sódio) na dosagem de 150g para cada 10.000 litros para elevar em 0.2. Aguardar 4 horas entre aplicações.</p>
+                    <p><strong>Efeitos do pH baixo:</strong> Corrosão de metais, irritação nos olhos e pele, desgaste acelerado do revestimento.</p>
+                </div>
+                
+                <div class="recomendacao-item">
+                    <h4>pH Ideal (7.2 - 7.6)</h4>
+                    <p><strong>Manutenção:</strong> Verificar pH diariamente. Manter alcalinidade entre 80-120ppm para estabilidade. Testar após chuvas fortes ou uso intensivo.</p>
+                    <p><strong>Dica:</strong> Ajustes pequenos são melhores - não tente corrigir mais que 0.4 de uma vez.</p>
+                </div>
+                
+                <div class="recomendacao-item">
+                    <h4>pH Alto (≥ 7.8)</h4>
+                    <p><strong>Causas:</strong> Excesso de produtos alcalinos, evaporação da água, alta alcalinidade.</p>
+                    <p><strong>Solução:</strong> Usar redutor de pH (ácido muriático) na proporção de 100ml para cada 10.000 litros para reduzir 0.1. Adicionar diluído em balde com água e distribuir uniformemente.</p>
+                    <p><strong>Efeitos do pH alto:</strong> Redução da eficácia do cloro, água turva, incrustações.</p>
+                </div>
+            </div>
+            
+            <div class="recomendacao-section">
+                <h3><i class="fas fa-thermometer-three-quarters"></i> Controle de Temperatura</h3>
+                
+                <div class="recomendacao-item">
+                    <h4>Temperatura Baixa (≤ 24°C)</h4>
+                    <p><strong>Ações:</strong> Verificar sistema de aquecimento. Cobrir a piscina à noite para conservar calor. Considerar uso de capa térmica.</p>
+                    <p><strong>Observação:</strong> Temperaturas abaixo de 20°C reduzem drasticamente a eficácia dos produtos químicos.</p>
+                </div>
+                
+                <div class="recomendacao-item">
+                    <h4>Temperatura Ideal (25°C - 28°C)</h4>
+                    <p><strong>Manutenção:</strong> Monitorar variações diárias. Manter sistema de filtragem operando adequadamente (6-8 horas/dia).</p>
+                    <p><strong>Dica:</strong> Temperaturas estáveis ajudam a manter o equilíbrio químico da água.</p>
+                </div>
+                
+                <div class="recomendacao-item">
+                    <h4>Temperatura Alta (≥ 30°C)</h4>
+                    <p><strong>Ações:</strong> Aumentar tempo de filtragem. Verificar dosagem de cloro (consumo é maior em temperaturas elevadas). Considerar uso de sombreamento.</p>
+                    <p><strong>Risco:</strong> Temperaturas acima de 32°C favorecem crescimento de algas e bactérias.</p>
+                </div>
+            </div>
+            
+            <div class="recomendacao-section">
+                <h3><i class="fas fa-shield-alt"></i> Cuidados Gerais</h3>
+                <div class="recomendacao-item">
+                    <h4>Manutenção Diária</h4>
+                    <p>- Verificar pH e cloro</p>
+                    <p>- Aspirar fundo quando necessário</p>
+                    <p>- Limpar skimmers e pré-filtro da bomba</p>
+                </div>
+                
+                <div class="recomendacao-item">
+                    <h4>Manutenção Semanal</h4>
+                    <p>- Testar alcalinidade total</p>
+                    <p>- Verificar cálcio (para piscinas de gesso/vinil)</p>
+                    <p>- Lavar filtro (se pressão aumentar 25% acima do normal)</p>
+                </div>
+                
+                <div class="recomendacao-item">
+                    <h4>Dicas Importantes</h4>
+                    <p>- Nunca misturar produtos químicos diretamente</p>
+                    <p>- Sempre circular a água por 4 horas após ajustes químicos</p>
+                    <p>- Manter registros de todas as medições e tratamentos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Sistema de Monitoramento de Piscina &copy; 2025 - Todos os direitos reservados</p>
+    </footer>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>pH+ Monitoramento de Piscinas &copy; 2025 - Todos os direitos reservados</p>
-  </footer>
-
-  <script>
-    // Menu dropdown dos três pontos
-    document.getElementById('menuDots').addEventListener('click', function() {
-      document.getElementById('dropdownMenu').classList.toggle('show');
-    });
-
-    // Fechar o menu quando clicar fora
-    window.addEventListener('click', function(event) {
-      if (!event.target.matches('.menu-dots')) {
-        var dropdowns = document.getElementsByClassName("dropdown-menu");
-        for (var i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
+    <script>
+        // Função para adicionar nova linha
+        function adicionarLinha() {
+            const tabela = document.getElementById('tabela-medicoes').getElementsByTagName('tbody')[0];
+            const novaLinha = tabela.insertRow();
+            
+            novaLinha.innerHTML = `
+                <td><input type="text" placeholder="Ex: Piscina Principal" style="width:100%; border:none; padding:5px;"></td>
+                <td><input type="number" step="0.1" placeholder="7.0" min="0" max="14" style="width:100%; border:none; padding:5px;"></td>
+                <td><input type="number" placeholder="26" min="0" max="50" style="width:100%; border:none; padding:5px;"></td>
+                <td><input type="date" style="width:100%; border:none; padding:5px;"></td>
+                <td>
+                    <div class="acoes">
+                        <a href="#" class="excluir" onclick="excluirLinha(this)" title="Excluir"><i class="fas fa-trash"></i></a>
+                        <a href="#" class="detalhar" onclick="detalharLinha(this)" title="Detalhes"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="editar" onclick="editarLinha(this)" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                    </div>
+                </td>
+            `;
         }
-      }
-    });
-  </script>
+        
+        // Funções das ações
+        function excluirLinha(elemento) {
+            if(confirm('Tem certeza que deseja excluir esta medição?')) {
+                elemento.closest('tr').remove();
+            }
+        }
+        
+        function detalharLinha(elemento) {
+            const linha = elemento.closest('tr');
+            const dados = {
+                nome: linha.cells[0].querySelector('input').value || 'Não informado',
+                ph: linha.cells[1].querySelector('input').value || 'Não medido',
+                temp: linha.cells[2].querySelector('input').value || 'Não medida',
+                data: linha.cells[3].querySelector('input').value || 'Não registrada'
+            };
+            
+            alert(`Detalhes da Medição:\n\nNome: ${dados.nome}\npH: ${dados.ph}\nTemperatura: ${dados.temp}°C\nData: ${dados.data}`);
+        }
+        
+        function editarLinha(elemento) {
+            const linha = elemento.closest('tr');
+            alert('Editando medição...');
+            // Implementação real de edição iria aqui
+        }
+        
+        // Modal de recomendações
+        const modal = document.getElementById('modalRecomendacao');
+        const btnRecomendacao = document.getElementById('btnRecomendacao');
+        const span = document.getElementsByClassName('close')[0];
+        
+        btnRecomendacao.onclick = function() {
+            modal.style.display = 'block';
+        }
+        
+        span.onclick = function() {
+            modal.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // 3 linhas iniciais
+            for(let i = 0; i < 3; i++) {
+                adicionarLinha();
+            }
+            
+            // Botão nova medição
+            document.getElementById('btnNovaMedicao').addEventListener('click', function(e) {
+                e.preventDefault();
+                adicionarLinha();
+            });
+        });
+    </script>
 </body>
 </html>
