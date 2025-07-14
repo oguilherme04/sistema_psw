@@ -26,3 +26,8 @@ class RecuperarSenhaForm(PasswordResetForm):
         max_length=254,
         widget=forms.EmailInput(attrs={'autocomplete': 'email', 'placeholder': 'Digite seu e-mail cadastrado'})
     )
+class MonitoramentoForm(forms.ModelForm):
+    class Meta:
+        model = Monitoramento
+        fields = ['piscina', 'ph', 'temperatura']
+
