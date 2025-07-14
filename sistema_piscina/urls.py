@@ -1,31 +1,27 @@
+from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.urls import path, include
 from . import views
-from .views import recuperar_senha
-from .views import recuperar_senha, pagina_view
-from .views import cadastrar_usuario, login_view
+from .views import (
+    index, dashboard, login_view, logout_view, cadastro,
+)
+
+app_name = 'sistema_piscina' 
 
 urlpatterns = [
-    # Páginas principais
-    path('', views.login_view, name='index'),
-    path('pagina/', views.pagina_view, name='pagina'),
-    
-    # Autenticação
-    path('accounts/login/', views.login_view, name='login'),
-    path('login/', views.login_view, name='login_alt'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('cadastro/', views.cadastro, name='cadastro'),
-    path('cadastrar/', views.cadastrar_usuario, name='cadastrar_usuario'),
+    path('', views.index, name='index'), 
     path('recuperar-senha/', views.recuperar_senha, name='recuperar_senha'),
-    
-    # Funcionalidades do sistema
-    path('medicoes/', views.medicoes, name='medicoes'),
-    path('questionario/', views.questionario, name='questionario'),
+    path('cadastro-piscina/', views.cadastro_piscina, name='cadastro_piscina'),
     path('monitoramento/', views.monitoramento, name='monitoramento'),
-    # Cadastros
-    path('cadastro-piscina/', views.cadastro_piscina_view, name='cadastro_piscina'),
-    path('cadastro-equipamento/', views.cadastro_equipamento_view, name='cadastro_equipamento'),
-    
-    path('pecas/', views.pecas_view, name='pecas'),
-    path('recomendacoes/', views.recomendacoes_view, name='recomendacoes'),
+    path('pecas/', views.pecas, name='pecas'),
+    path('cadastro-equipamento/', views.cadastro_equipamento, name='cadastro_equipamento'),
+    path('recomendacoes/', views.recomendacoes, name='recomendacoes'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('cadastro/', cadastro, name='cadastro'),
+    path('reset-password/', CustomPasswordResetView.as_view(), name='password_reset'),
+    path('monitoramento/', monitoramento_view, name='monitoramento'),
+    path('monitoramento/novo/', nova_medicao, name='nova_medicao'),
 ]
