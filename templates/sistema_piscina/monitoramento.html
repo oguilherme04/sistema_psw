@@ -295,7 +295,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Linhas serão adicionadas dinamicamente -->
+                
             </tbody>
         </table>
         
@@ -331,7 +331,6 @@
         </div>
     </div>
     
-    <!-- Modal de Recomendações -->
     <div id="modalRecomendacao" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -424,7 +423,7 @@
     </footer>
 
     <script>
-        // Função para adicionar nova linha
+        
         function adicionarLinha() {
             const tabela = document.getElementById('tabela-medicoes').getElementsByTagName('tbody')[0];
             const novaLinha = tabela.insertRow();
@@ -444,7 +443,7 @@
             `;
         }
         
-        // Funções das ações
+        
         function excluirLinha(elemento) {
             if(confirm('Tem certeza que deseja excluir esta medição?')) {
                 elemento.closest('tr').remove();
@@ -466,10 +465,10 @@
         function editarLinha(elemento) {
             const linha = elemento.closest('tr');
             alert('Editando medição...');
-            // Implementação real de edição iria aqui
+            
         }
         
-        // Modal de recomendações
+        
         const modal = document.getElementById('modalRecomendacao');
         const btnRecomendacao = document.getElementById('btnRecomendacao');
         const span = document.getElementsByClassName('close')[0];
@@ -488,14 +487,14 @@
             }
         }
         
-        // Inicialização
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // 3 linhas iniciais
+        
             for(let i = 0; i < 3; i++) {
                 adicionarLinha();
             }
             
-            // Botão nova medição
+            
             document.getElementById('btnNovaMedicao').addEventListener('click', function(e) {
                 e.preventDefault();
                 adicionarLinha();
