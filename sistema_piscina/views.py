@@ -80,7 +80,31 @@ def monitoramento_view(request):
         'piscinas': piscinas
     })
 
+def nova_medicao(request): -> coloca isso 
+    if request.method == 'POST':
+        piscina_id = request.POST.get('piscina')
+        ph = request.POST.get('ph')
+        temperatura = request.POST.get('temperatura')
+        usuario = request.user if request.user.is_authenticated else None
 
+        if piscina_id and ph and temperatura:
+            try:
+                piscina = Piscina.objects.get(id=piscina_id)
 
+                Monitoramento.objects.create(
+                    piscina=piscina,
+                    ph=ph,
+                    temperatura=temperatura,
+                    usuario=usuario
+                )
 
+                return redirect('monitoramento')
 
+            except Piscina.DoesNotExist:
+                return render(request, 'sistema_piscina/nova_medicao.html', {
+                    'erro': 'Piscina não encontrada.',
+                    'piscinas': Piscina.objects.all()
+                })
+
+    piscinas = Piscina.objects.all()
+    return render(request, 'sistema_piscina/nova_medicao.html', {'piscinas': piscinas})
