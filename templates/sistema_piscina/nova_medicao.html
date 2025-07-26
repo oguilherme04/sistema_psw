@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Monitoramento</title>
+    <style>
+        :root {
+            --azul-claro: #4FC3F7;
+            --verde-escuro: #2E7D32;
+            --verde-hover: #1B5E20;
+            --cinza-escuro: #333;
+            --cinza-claro: #f0f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+        }
+
+        header {
+            background-color: var(--azul-claro);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: var(--cinza-escuro);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        select, input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        .btn-cadastrar {
+            width: 150px;  /* Largura reduzida */
+            padding: 10px 15px;  /* Padding reduzido */
+            font-size: 14px;  /* Fonte menor */
+            font-weight: bold;
+            background-color: var(--verde-escuro);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            /* Removido o margin-auto para alinhar à esquerda */
+        }
+
+        .btn-cadastrar:hover {
+            background-color: var(--verde-hover);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        pH+ Monitoramento de Piscinas
+    </header>
+
+    <div class="container">
+        <h1>REGISTRAR</h1>
+        <h2>MONITORAMENTO</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nome">Tipo de Piscina</label>
+                <select name="nome" id="nome" required>
+                    <option value="" disabled selected>Selecione uma opção</option>
+                    <option value="publica">Pública</option>
+                    <option value="privada">Privada</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="ph">Nível de PH</label>
+                    <input type="text" name="ph" id="ph" placeholder="Ex: 7.2" required>
+                </div>
+                <div class="form-group">
+                    <label for="temperatura">Temperatura (°C)</label>
+                    <input type="text" name="temperatura" id="temperatura" placeholder="Ex: 26" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-cadastrar">CADASTRAR</button>
+        </form>
+    </div>
+
+    <footer>
+        pH+ Monitoramento de Piscinas &copy; 2025 - Todos os direitos reservados
+    </footer>
+</body>
+</html>
+
+
